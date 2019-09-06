@@ -18,6 +18,9 @@
 
     <modules>
         <module>search-api</module>
+        <module>search-common</module>
+        <module>search-admin</module>
+        <module>search-core</module>
     </modules>
     
 </project>
