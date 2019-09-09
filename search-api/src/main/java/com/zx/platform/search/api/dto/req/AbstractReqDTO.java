@@ -3,6 +3,7 @@ package com.zx.platform.search.api.dto.req;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Description:
@@ -16,9 +17,15 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class AbstractRequest implements Serializable {
+public class AbstractReqDTO implements Serializable {
 
     private static final long serialVersionUID = -907808523528362200L;
+
+    protected String project;
+
+    protected String index;
+
+    protected String alias;
 
     protected String requestId;
 
@@ -27,5 +34,9 @@ public class AbstractRequest implements Serializable {
     protected Integer start;
 
     protected Integer rows;
+
+    protected List<String> includes;
+
+    protected List<String> excludes;
 
 }
