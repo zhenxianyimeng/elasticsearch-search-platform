@@ -11,11 +11,10 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum FieldFilterTypeEnum {
-    TERM(1, "term"),
-    TERMS(2, "terms"),
-    EXISTS(3, "exists");
+    TERM("term"),
+    TERMS("terms"),
+    EXISTS("exists");
 
-    private final int id;
     private final String value;
 
 }

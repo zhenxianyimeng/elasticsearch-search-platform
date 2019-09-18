@@ -1,6 +1,7 @@
 package com.zx.platform.search.api.constants;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 /**
  * Description:
@@ -10,10 +11,10 @@ import lombok.AllArgsConstructor;
  * @time: 19:43
  */
 @AllArgsConstructor
+@Getter
 public enum FieldSortTypeEnum {
-    ASC(1, "asc"),
-    DESC(2, "desc");
+    ASC("asc"),
+    DESC("desc");
 
-    private final int id;
     private final String value;
 }

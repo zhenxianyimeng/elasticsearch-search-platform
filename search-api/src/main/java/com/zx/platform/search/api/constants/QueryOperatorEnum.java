@@ -12,6 +12,9 @@ import lombok.Data;
  */
 @AllArgsConstructor
 public enum QueryOperatorEnum {
+    /**
+     * 分词后的命中情况，and表示所有分词结果命中才返回，or表示其中一个分词命中就返回
+     */
     AND("and"),
     OR("or");
 

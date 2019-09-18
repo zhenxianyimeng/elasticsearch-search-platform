@@ -1,6 +1,6 @@
 package com.zx.platform.search.api.dto.common;
 
-import com.zx.platform.search.api.constants.AggsTypeEnum;
+import com.zx.platform.search.api.constants.AggTypeEnum;
 import lombok.*;
 
 import java.io.Serializable;
@@ -23,7 +23,7 @@ public class FieldAggs implements Serializable {
 
     private String key;
     private String field;
-    private AggsTypeEnum type;
+    private AggTypeEnum type;
     private List<FieldAggs> subAggs;
 
 }
