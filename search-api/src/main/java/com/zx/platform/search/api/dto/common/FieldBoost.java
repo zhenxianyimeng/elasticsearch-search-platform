@@ -1,6 +1,8 @@
 package com.zx.platform.search.api.dto.common;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -12,7 +14,9 @@ import java.io.Serializable;
  * @time: 20:43
  */
 @Data
-public class Boost implements Serializable {
+@AllArgsConstructor
+@NoArgsConstructor
+public class FieldBoost implements Serializable {
 
     private static final long serialVersionUID = -8421165501823935827L;
 
@@ -20,4 +24,8 @@ public class Boost implements Serializable {
 
     private Float boost;
 
+    public FieldBoost(String field) {
+        this.field = field;
+        this.boost = 1.0f;
+    }
 }

@@ -35,6 +35,12 @@
             <artifactId>elasticsearch</artifactId>
             <version>6.5.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.zx.platform</groupId>
+            <artifactId>search-api</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
     
 </project>

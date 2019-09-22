@@ -11,11 +11,9 @@ import java.io.Serializable;
  * @date: 2019-09-06
  * @time: 19:59
  */
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class FieldRange<T> implements Serializable {
     private static final long serialVersionUID = -5180170114929718707L;
 

@@ -13,17 +13,17 @@ import java.util.List;
  * @date: 2019-09-06
  * @time: 19:56
  */
-@Setter
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-public class FieldAggs implements Serializable {
+public class FieldAgg implements Serializable {
     private static final long serialVersionUID = -4640743531239838629L;
 
     private String key;
     private String field;
     private AggTypeEnum type;
-    private List<FieldAggs> subAggs;
+    private List<FieldAgg> subAggList;
+    private Integer size;
+    private Object value;
 
 }

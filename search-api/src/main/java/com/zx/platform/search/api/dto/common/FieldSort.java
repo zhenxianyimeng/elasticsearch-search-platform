@@ -12,11 +12,9 @@ import java.io.Serializable;
  * @date: 2019-09-06
  * @time: 20:01
  */
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
 public class FieldSort implements Serializable {
     private static final long serialVersionUID = -4235448628111446039L;
 

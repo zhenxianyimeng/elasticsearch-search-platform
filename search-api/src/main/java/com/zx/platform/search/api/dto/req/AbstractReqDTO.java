@@ -12,11 +12,9 @@ import java.util.List;
  * @date: 2019-09-06
  * @time: 19:52
  */
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
-@ToString
 public class AbstractReqDTO implements Serializable {
 
     private static final long serialVersionUID = -907808523528362200L;
@@ -31,9 +29,9 @@ public class AbstractReqDTO implements Serializable {
 
     protected String appKey;
 
-    protected Integer start;
+    protected Integer from;
 
-    protected Integer rows;
+    protected Integer size=0;
 
     protected List<String> includes;
 

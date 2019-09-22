@@ -1,7 +1,8 @@
 package com.zx.platform.search.api.dto.req;
 
-import com.zx.platform.search.api.constants.CrudTypeEnum;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -13,13 +14,17 @@ import java.io.Serializable;
  * @time: 20:31
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CrudReqDTO<T> implements Serializable {
 
     private static final long serialVersionUID = -8945771667117188107L;
 
     private String id;
 
-    private CrudTypeEnum action;
-
     private T data;
+
+    public CrudReqDTO(String id) {
+        this.id = id;
+    }
 }

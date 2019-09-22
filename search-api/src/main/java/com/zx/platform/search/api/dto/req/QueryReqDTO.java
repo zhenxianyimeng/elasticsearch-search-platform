@@ -1,6 +1,7 @@
 package com.zx.platform.search.api.dto.req;
 
-import com.zx.platform.search.api.dto.common.Boost;
+import com.zx.platform.search.api.constants.QueryOperatorEnum;
+import com.zx.platform.search.api.dto.common.FieldBoost;
 import lombok.Data;
 
 import java.util.List;
@@ -19,10 +20,12 @@ public class QueryReqDTO extends FilterReqDTO{
 
     protected String query;
 
-    protected List<Boost> fieldBoostList;
+    protected List<FieldBoost> fieldBoostList;
 
     protected String searchAnalyzer = "ik_smart";
 
+    protected QueryOperatorEnum operator = QueryOperatorEnum.OR;
 
+    protected Boolean must = false;
 
 }
