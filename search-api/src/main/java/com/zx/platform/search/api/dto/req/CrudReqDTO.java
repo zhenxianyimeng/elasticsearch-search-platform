@@ -16,7 +16,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CrudReqDTO<T> implements Serializable {
+public class CrudReqDTO<T> extends AbstractReqDTO {
 
     private static final long serialVersionUID = -8945771667117188107L;
 
