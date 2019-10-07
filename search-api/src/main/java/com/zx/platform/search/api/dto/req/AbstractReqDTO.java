@@ -23,6 +23,8 @@ public class AbstractReqDTO implements Serializable {
 
     protected String index;
 
+    protected String type;
+
     protected String alias;
 
     protected String requestId;
