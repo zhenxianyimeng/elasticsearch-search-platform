@@ -1,6 +1,7 @@
 package com.zx.platform.search.core.service;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.zx.platform.search.api.ICrudService;
 import com.zx.platform.search.api.dto.req.CrudReqDTO;
 import com.zx.platform.search.api.dto.resp.CrudRespDTO;
@@ -25,6 +26,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+
 /**
  * Description:
  *
@@ -42,6 +45,14 @@ public class CrudServiceImpl implements ICrudService {
 
     @Override
     public <T> CrudRespDTO<T> get(CrudReqDTO crudReqDTO, Class<T> clazz) throws SearchException {
+        CrudRespDTO respDTO = get(crudReqDTO);
+        Map<String, Object> source = (Map<String, Object>) respDTO.getContent();
+        respDTO.setContent(JSONObject.parseObject(JSON.toJSONString(source), clazz));
+        return respDTO;
+    }
+
+    @Override
+    public CrudRespDTO get(CrudReqDTO crudReqDTO) throws SearchException {
         CrudRespDTO crudRespDTO = new CrudRespDTO();
         long start = System.currentTimeMillis();
         try {
@@ -55,8 +66,8 @@ public class CrudServiceImpl implements ICrudService {
             getRequest.id(crudReqDTO.getId());
             GetResponse getResponse = client.get(getRequest, RequestOptions.DEFAULT);
             if (getResponse.isExists()) {
-                String source = getResponse.getSourceAsString();
-                crudRespDTO.setContent(JSON.parseObject(source, clazz));
+                Map<String, Object> source = getResponse.getSourceAsMap();
+                crudRespDTO.setContent(source);
             }
         } catch (Exception e) {
             logger.error("search get error", e);

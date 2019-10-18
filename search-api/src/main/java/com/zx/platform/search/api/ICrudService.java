@@ -15,6 +15,8 @@ public interface ICrudService {
 
     <T> CrudRespDTO<T> get(CrudReqDTO crudReqDTO, Class<T> clazz) throws SearchException;
 
+    CrudRespDTO get(CrudReqDTO crudReqDTO) throws SearchException;
+
     void insert(CrudReqDTO crudReqDTO) throws SearchException;
 
     void update(CrudReqDTO crudReqDTO) throws SearchException;

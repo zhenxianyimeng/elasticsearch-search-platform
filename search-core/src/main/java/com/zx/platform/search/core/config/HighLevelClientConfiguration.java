@@ -1,7 +1,11 @@
 package com.zx.platform.search.core.config;
 
 import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.nio.client.HttpAsyncClientBuilder;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestClientBuilder;
@@ -35,10 +39,19 @@ public class HighLevelClientConfiguration {
     @Value("${elasticsearch.max.connect.total}")
     private Integer maxConnectTotal;
 
+    @Value("${elasticsearch.username}")
+    private String username;
+
+    @Value("${elasticsearch.password}")
+    private String password;
+
     @Bean
     public RestHighLevelClient restHighLevelClient(){
         HttpHost httpHost = new HttpHost(host, port, scheme);
         RestClientBuilder builder =  RestClient.builder(httpHost);
+        CredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+        credentialsProvider.setCredentials(AuthScope.ANY,
+                new UsernamePasswordCredentials(username, password));
         builder.setRequestConfigCallback(new RestClientBuilder.RequestConfigCallback() {
             @Override
             public RequestConfig.Builder customizeRequestConfig(RequestConfig.Builder builder) {
@@ -50,6 +63,7 @@ public class HighLevelClientConfiguration {
             @Override
             public HttpAsyncClientBuilder customizeHttpClient(HttpAsyncClientBuilder httpAsyncClientBuilder) {
                 httpAsyncClientBuilder.setMaxConnTotal(maxConnectTotal);
+                httpAsyncClientBuilder.setDefaultCredentialsProvider(credentialsProvider);
                 return httpAsyncClientBuilder;
             }
         });
