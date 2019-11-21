@@ -2,7 +2,7 @@ package com.zx.platform.search.core.service;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.zx.platform.search.api.ICrudService;
+import com.zx.platform.search.api.api.ICrudService;
 import com.zx.platform.search.api.dto.req.CrudReqDTO;
 import com.zx.platform.search.api.dto.resp.CrudRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
@@ -16,7 +16,6 @@ import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.action.update.UpdateResponse;
-import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.xcontent.XContentType;

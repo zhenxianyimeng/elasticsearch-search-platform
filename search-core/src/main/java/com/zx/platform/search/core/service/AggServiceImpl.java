@@ -1,6 +1,6 @@
 package com.zx.platform.search.core.service;
 
-import com.zx.platform.search.api.IAggService;
+import com.zx.platform.search.api.api.IAggService;
 import com.zx.platform.search.api.dto.req.AggReqDTO;
 import com.zx.platform.search.api.dto.resp.AggRespDTO;
 import com.zx.platform.search.api.exception.SearchException;

@@ -1,4 +1,4 @@
-package com.zx.platform.search.api;
+package com.zx.platform.search.api.api;
 
 import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;

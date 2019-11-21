@@ -1,18 +1,15 @@
 package com.zx.platform.search.core.service;
 
-import com.zx.platform.search.api.ICrudService;
+import com.zx.platform.search.api.api.ICrudService;
 import com.zx.platform.search.api.dto.req.CrudReqDTO;
 import com.zx.platform.search.api.dto.resp.CrudRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
 import com.zx.platform.search.core.model.Ratings;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.*;
 
 /**
  * Description:

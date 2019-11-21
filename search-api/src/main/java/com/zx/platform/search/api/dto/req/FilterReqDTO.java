@@ -15,10 +15,11 @@ import java.util.List;
  * @time: 20:26
  */
 @Data
-public class FilterReqDTO implements Serializable {
+public class FilterReqDTO extends AbstractReqDTO implements Serializable {
 
     private static final long serialVersionUID = -2691212494530466957L;
 
+    protected List<FieldFilter> filterFields;
     protected List<FieldFilter> mustFields;
     protected List<FieldFilter> mustNotFields;
     protected List<FieldFilter> shouldFields;

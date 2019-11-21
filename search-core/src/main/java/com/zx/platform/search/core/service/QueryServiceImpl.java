@@ -1,6 +1,6 @@
 package com.zx.platform.search.core.service;
 
-import com.zx.platform.search.api.IQueryService;
+import com.zx.platform.search.api.api.IQueryService;
 import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.api.dto.resp.HitsRespDTO;
@@ -23,6 +23,7 @@ public class QueryServiceImpl implements IQueryService {
 
     @Override
     public HitsRespDTO filter(FilterReqDTO reqDto) throws SearchException {
+
         return null;
     }
 }

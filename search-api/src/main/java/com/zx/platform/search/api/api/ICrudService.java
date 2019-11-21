@@ -1,4 +1,4 @@
-package com.zx.platform.search.api;
+package com.zx.platform.search.api.api;
 
 import com.zx.platform.search.api.dto.req.CrudReqDTO;
 import com.zx.platform.search.api.dto.resp.CrudRespDTO;
