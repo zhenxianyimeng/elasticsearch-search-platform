@@ -1,6 +1,7 @@
 package com.zx.platform.search.api.dto.common;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class BoolQuery implements Serializable {
     private static final long serialVersionUID = -937571288814484512L;
 

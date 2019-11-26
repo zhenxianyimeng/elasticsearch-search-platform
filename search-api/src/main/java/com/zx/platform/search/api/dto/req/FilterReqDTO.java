@@ -2,7 +2,11 @@ package com.zx.platform.search.api.dto.req;
 
 import com.zx.platform.search.api.dto.common.FieldFilter;
 import com.zx.platform.search.api.dto.common.FieldSort;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,6 +19,7 @@ import java.util.List;
  * @time: 20:26
  */
 @Data
+@SuperBuilder
 public class FilterReqDTO extends AbstractReqDTO implements Serializable {
 
     private static final long serialVersionUID = -2691212494530466957L;

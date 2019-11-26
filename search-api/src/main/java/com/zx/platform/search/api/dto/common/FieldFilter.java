@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class FieldFilter<T> implements Serializable {
     private static final long serialVersionUID = -7326811972566747007L;
 

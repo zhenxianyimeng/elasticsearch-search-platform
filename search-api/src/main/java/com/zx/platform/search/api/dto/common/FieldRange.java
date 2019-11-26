@@ -14,6 +14,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FieldRange<T> implements Serializable {
     private static final long serialVersionUID = -5180170114929718707L;
 

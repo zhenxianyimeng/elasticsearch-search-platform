@@ -12,9 +12,7 @@ import java.io.Serializable;
  * @time: 20:11
  */
 @NoArgsConstructor
-@ToString
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = -5696930514020607879L;

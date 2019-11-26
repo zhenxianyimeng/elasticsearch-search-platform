@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FieldAgg implements Serializable {
     private static final long serialVersionUID = -4640743531239838629L;
 

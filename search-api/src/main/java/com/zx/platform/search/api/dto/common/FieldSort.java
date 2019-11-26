@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class FieldSort implements Serializable {
     private static final long serialVersionUID = -4235448628111446039L;
 
