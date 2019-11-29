@@ -33,65 +33,39 @@ import java.util.List;
  * @date: 2019-11-21
  * @time: 20:05
  */
-@Service
 public class BaseSearchService {
 
-    @Autowired
-    private RestHighLevelClient client;
-
-    private static final Logger logger = LoggerFactory.getLogger(BaseSearchService.class);
-
-    public void searchSourceWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO filterReqDTO){
+    public void searchSourceWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO filterReqDTO) {
         this.sourceCommonWrapper(sourceBuilder, filterReqDTO);
         this.sourceFetchWrapper(sourceBuilder, filterReqDTO);
     }
 
-    public HitsRespDTO executeSearch(FilterReqDTO reqDTO, String method) throws SearchException {
+    public SearchRequest builderSearchRequest(FilterReqDTO reqDTO) {
         HitsRespDTO hitsRespDTO = new HitsRespDTO();
-        long start = System.currentTimeMillis();
-        String index = reqDTO.getIndex();
-        try {
-            SearchRequest searchRequest = new SearchRequest(index);
-            SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
-            this.searchSourceWrapper(sourceBuilder, reqDTO);
-            BoolQueryBuilder boolQueryBuilder = SearchBuilderUtils.boolQueryBuilder(
-                    new BoolQuery(reqDTO.getFilterFields(), reqDTO.getMustFields(), reqDTO.getMustNotFields(),
-                            reqDTO.getShouldFields(), reqDTO.getMinNumShouldMatch())
-            );
-            //subBuilder
-            subBuilder(sourceBuilder, boolQueryBuilder, reqDTO);
+        SearchRequest searchRequest = new SearchRequest(reqDTO.getIndex());
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        this.searchSourceWrapper(sourceBuilder, reqDTO);
+        BoolQueryBuilder boolQueryBuilder = SearchBuilderUtils.boolQueryBuilder(
+                new BoolQuery(reqDTO.getFilterFields(), reqDTO.getMustFields(), reqDTO.getMustNotFields(),
+                        reqDTO.getShouldFields(), reqDTO.getMinNumShouldMatch())
+        );
+        //subBuilder
+        subBuilder(sourceBuilder, boolQueryBuilder, reqDTO);
 
-            sourceBuilder.query(boolQueryBuilder);
-            searchRequest.source(sourceBuilder);
-            List<Object> hits = new ArrayList<>();
-            logger.info("es {}, dsl={}", method, sourceBuilder);
-            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-            if(searchResponse == null || !RestStatus.OK.equals(searchResponse.status())){
-                logger.warn("es {} fail req={}", method, reqDTO);
-            }else {
-                hitsRespDTO.setTotal(searchResponse.getHits().getTotalHits());
-                for(SearchHit sh : searchResponse.getHits()){
-                    hits.add(ParserUtils.hitToMap(sh));
-                }
-                hitsRespDTO.setHits(hits);
-            }
-        }catch (Exception e){
-            logger.error("search error");
-        }finally {
-            long cost = System.currentTimeMillis() - start;
-            logger.info("search {} cost={}ms", method, cost);
-        }
-        return hitsRespDTO;
+        sourceBuilder.query(boolQueryBuilder);
+        searchRequest.source(sourceBuilder);
+
+        return searchRequest;
     }
 
-    public void subBuilder(SearchSourceBuilder sourceBuilder, BoolQueryBuilder boolQueryBuilder, FilterReqDTO filterReqDTO){
+    public void subBuilder(SearchSourceBuilder sourceBuilder, BoolQueryBuilder boolQueryBuilder, FilterReqDTO filterReqDTO) {
 
     }
 
-    public void sourceFetchWrapper(SearchSourceBuilder sourceBuilder, AbstractReqDTO reqDTO){
+    public void sourceFetchWrapper(SearchSourceBuilder sourceBuilder, AbstractReqDTO reqDTO) {
         sourceBuilder.fetchSource(
-                reqDTO.getIncludes() == null? null : reqDTO.getIncludes().toArray(new String[reqDTO.getIncludes().size()]),
-                reqDTO.getExcludes() == null? null : reqDTO.getExcludes().toArray(new String[reqDTO.getExcludes().size()])
+                reqDTO.getIncludes() == null ? null : reqDTO.getIncludes().toArray(new String[reqDTO.getIncludes().size()]),
+                reqDTO.getExcludes() == null ? null : reqDTO.getExcludes().toArray(new String[reqDTO.getExcludes().size()])
         );
     }
 

@@ -4,6 +4,7 @@ import com.zx.platform.search.api.dto.common.FieldAgg;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 

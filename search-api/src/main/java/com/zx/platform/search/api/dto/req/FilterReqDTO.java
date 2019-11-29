@@ -19,7 +19,6 @@ import java.util.List;
  * @time: 20:26
  */
 @Data
-@SuperBuilder
 public class FilterReqDTO extends AbstractReqDTO implements Serializable {
 
     private static final long serialVersionUID = -2691212494530466957L;

@@ -3,6 +3,7 @@ package com.zx.platform.search.api.dto.req;
 import com.zx.platform.search.api.constants.QueryOperatorEnum;
 import com.zx.platform.search.api.dto.common.FieldBoost;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
