@@ -1,47 +1,36 @@
-package com.zx.platform.search.core.service;
+package com.zx.platform.search.core.wrapper;
 
-import com.zx.platform.search.api.api.ICrudService;
 import com.zx.platform.search.api.dto.common.BoolQuery;
 import com.zx.platform.search.api.dto.req.AbstractReqDTO;
 import com.zx.platform.search.api.dto.req.FilterReqDTO;
-import com.zx.platform.search.api.dto.resp.HitsRespDTO;
-import com.zx.platform.search.api.exception.SearchException;
-import com.zx.platform.search.core.utils.ParserUtils;
+import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.core.utils.SearchBuilderUtils;
 import org.elasticsearch.action.search.SearchRequest;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.RequestOptions;
-import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.rest.RestStatus;
-import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.index.query.MultiMatchQueryBuilder;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.elasticsearch.search.sort.SortOrder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.util.StringUtils;
 
 /**
  * Description:
  *
  * @author: zhenxianyimeng
- * @date: 2019-11-21
- * @time: 20:05
+ * @date: 2019-11-30
+ * @time: 21:46
  */
-public class BaseSearchService {
+@Component
+public class SearchRequestWrapper {
 
-    public void searchSourceWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO filterReqDTO) {
-        this.sourceCommonWrapper(sourceBuilder, filterReqDTO);
-        this.sourceFetchWrapper(sourceBuilder, filterReqDTO);
+    public SearchRequest buildQueryRequest(QueryReqDTO reqDTO){
+        SearchRequest searchRequest = this.buildFilterRequest(reqDTO);
+        this.queryWrapper(searchRequest, reqDTO);
+        return searchRequest;
     }
 
-    public SearchRequest builderSearchRequest(FilterReqDTO reqDTO) {
-        HitsRespDTO hitsRespDTO = new HitsRespDTO();
+    public SearchRequest buildFilterRequest(FilterReqDTO reqDTO) {
         SearchRequest searchRequest = new SearchRequest(reqDTO.getIndex());
         SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
         this.searchSourceWrapper(sourceBuilder, reqDTO);
@@ -49,8 +38,6 @@ public class BaseSearchService {
                 new BoolQuery(reqDTO.getFilterFields(), reqDTO.getMustFields(), reqDTO.getMustNotFields(),
                         reqDTO.getShouldFields(), reqDTO.getMinNumShouldMatch())
         );
-        //subBuilder
-        subBuilder(sourceBuilder, boolQueryBuilder, reqDTO);
 
         sourceBuilder.query(boolQueryBuilder);
         searchRequest.source(sourceBuilder);
@@ -58,18 +45,34 @@ public class BaseSearchService {
         return searchRequest;
     }
 
-    public void subBuilder(SearchSourceBuilder sourceBuilder, BoolQueryBuilder boolQueryBuilder, FilterReqDTO filterReqDTO) {
-
+    private void queryWrapper(SearchRequest searchRequest, QueryReqDTO reqDTO){
+        BoolQueryBuilder boolQueryBuilder = (BoolQueryBuilder) searchRequest.source().query();
+        if(StringUtils.isEmpty(reqDTO.getQuery()) || CollectionUtils.isEmpty(reqDTO.getFieldBoostList())){
+            return;
+        }
+        MultiMatchQueryBuilder multiMatchQueryBuilder = SearchBuilderUtils.multiMatchQueryBuilder(reqDTO.getQuery(), reqDTO.getFieldBoostList(),
+                reqDTO.getSearchAnalyzer(), reqDTO.getOperator());
+        if(reqDTO.getMust()){
+            boolQueryBuilder.must(multiMatchQueryBuilder);
+        }else {
+            boolQueryBuilder.should(multiMatchQueryBuilder);
+            boolQueryBuilder.minimumShouldMatch(reqDTO.getMinNumShouldMatch());
+        }
     }
 
-    public void sourceFetchWrapper(SearchSourceBuilder sourceBuilder, AbstractReqDTO reqDTO) {
+    private void searchSourceWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO filterReqDTO) {
+        this.sourceCommonWrapper(sourceBuilder, filterReqDTO);
+        this.sourceFetchWrapper(sourceBuilder, filterReqDTO);
+    }
+
+    private void sourceFetchWrapper(SearchSourceBuilder sourceBuilder, AbstractReqDTO reqDTO) {
         sourceBuilder.fetchSource(
                 reqDTO.getIncludes() == null ? null : reqDTO.getIncludes().toArray(new String[reqDTO.getIncludes().size()]),
                 reqDTO.getExcludes() == null ? null : reqDTO.getExcludes().toArray(new String[reqDTO.getExcludes().size()])
         );
     }
 
-    public void sourceCommonWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO reqDTO) {
+    private void sourceCommonWrapper(SearchSourceBuilder sourceBuilder, FilterReqDTO reqDTO) {
         if (reqDTO.getFrom() != null && reqDTO.getFrom() > 0) {
             sourceBuilder.from(reqDTO.getFrom());
         }

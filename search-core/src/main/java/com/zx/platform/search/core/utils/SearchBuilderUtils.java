@@ -1,11 +1,13 @@
 package com.zx.platform.search.core.utils;
 
+import com.zx.platform.search.api.constants.QueryOperatorEnum;
 import com.zx.platform.search.api.dto.common.BoolQuery;
+import com.zx.platform.search.api.dto.common.FieldBoost;
 import com.zx.platform.search.api.dto.common.FieldFilter;
-import org.elasticsearch.index.query.AbstractQueryBuilder;
-import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.index.query.*;
 import org.springframework.util.CollectionUtils;
+
+import java.util.List;
 
 /**
  * Description:
@@ -56,5 +58,23 @@ public class SearchBuilderUtils {
         }
         queryBuilder.boost(filter.getBoost());
         return queryBuilder;
+    }
+
+    public static MultiMatchQueryBuilder multiMatchQueryBuilder(String query, List<FieldBoost> boostList, String analyzer, QueryOperatorEnum operator) {
+        String[] fields = new String[boostList.size()];
+        for (int i = 0; i < boostList.size(); i++) {
+            fields[i] = boostList.get(i).getField();
+        }
+        MultiMatchQueryBuilder multiMatchQueryBuilder = new MultiMatchQueryBuilder(query, fields);
+        multiMatchQueryBuilder.analyzer(analyzer);
+        for (FieldBoost fieldBoost : boostList) {
+            multiMatchQueryBuilder.field(fieldBoost.getField(), fieldBoost.getBoost());
+        }
+        if (operator == QueryOperatorEnum.OR) {
+            multiMatchQueryBuilder.operator(Operator.OR);
+        } else {
+            multiMatchQueryBuilder.operator(Operator.AND);
+        }
+        return multiMatchQueryBuilder;
     }
 }

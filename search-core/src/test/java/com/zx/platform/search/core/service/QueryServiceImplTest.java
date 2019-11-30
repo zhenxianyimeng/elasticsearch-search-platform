@@ -2,8 +2,10 @@ package com.zx.platform.search.core.service;
 
 import com.zx.platform.search.api.api.IQueryService;
 import com.zx.platform.search.api.constants.FieldFilterTypeEnum;
+import com.zx.platform.search.api.dto.common.FieldBoost;
 import com.zx.platform.search.api.dto.common.FieldFilter;
 import com.zx.platform.search.api.dto.req.FilterReqDTO;
+import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.api.dto.resp.HitsRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
 import org.junit.Test;
@@ -41,6 +43,19 @@ public class QueryServiceImplTest {
         reqDTO.setMustFields(must);
 
         HitsRespDTO hitsRespDTO = queryService.filter(reqDTO);
+        System.out.println(hitsRespDTO);
+    }
+
+    @Test
+    public void queryTest() throws SearchException {
+        QueryReqDTO reqDTO = new QueryReqDTO();
+        reqDTO.setIndex(INDEX);
+        reqDTO.setQuery("喜欢");
+        List<FieldBoost> list = new ArrayList<>();
+        list.add(new FieldBoost("comment", 1.2f));
+        reqDTO.setFieldBoostList(list);
+
+        HitsRespDTO hitsRespDTO = queryService.query(reqDTO);
         System.out.println(hitsRespDTO);
     }
 }

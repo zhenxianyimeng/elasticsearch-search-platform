@@ -11,7 +11,8 @@ import lombok.AllArgsConstructor;
  */
 @AllArgsConstructor
 public enum  SearchExceptionCodeEnum {
-    INNER_ERROR(900001,"系统内部错误")
+    INNER_ERROR(900001,"系统内部错误"),
+    ES_CLIENT_ERROR(800001, "es客户端错误")
                         ;
     private Integer code;
 
