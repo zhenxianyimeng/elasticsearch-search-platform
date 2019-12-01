@@ -1,10 +1,12 @@
 package com.zx.platform.search.core.utils;
 
 import com.zx.platform.search.api.constants.QueryOperatorEnum;
-import com.zx.platform.search.api.dto.common.BoolQuery;
-import com.zx.platform.search.api.dto.common.FieldBoost;
-import com.zx.platform.search.api.dto.common.FieldFilter;
+import com.zx.platform.search.api.dto.common.*;
 import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.aggregations.AggregationBuilder;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.bucket.range.RangeAggregationBuilder;
+import org.elasticsearch.search.aggregations.bucket.range.RangeAggregator;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
@@ -76,5 +78,44 @@ public class SearchBuilderUtils {
             multiMatchQueryBuilder.operator(Operator.AND);
         }
         return multiMatchQueryBuilder;
+    }
+
+    public static AggregationBuilder aggBuilder(FieldAgg fieldAgg) {
+        AggregationBuilder builder = null;
+        switch (fieldAgg.getType()) {
+            case COUNT:
+                builder = AggregationBuilders.count(fieldAgg.getKey()).field(fieldAgg.getField());
+                break;
+            case AVG:
+                builder = AggregationBuilders.avg(fieldAgg.getKey()).field(fieldAgg.getField());
+                break;
+            case MAX:
+                builder = AggregationBuilders.max(fieldAgg.getKey()).field(fieldAgg.getField());
+                break;
+            case MIN:
+                builder = AggregationBuilders.min(fieldAgg.getKey()).field(fieldAgg.getField());
+                break;
+            case SUM:
+                builder = AggregationBuilders.sum(fieldAgg.getKey()).field(fieldAgg.getField());
+                break;
+            case RANGE:
+                RangeAggregationBuilder rangeBuilder = AggregationBuilders
+                        .range(fieldAgg.getKey()).field(fieldAgg.getField());
+                List<FieldAggRange> fieldAggRanges = ParserUtils.parseFieldAggRange(fieldAgg.getValue());
+                for (FieldAggRange aggRange : fieldAggRanges) {
+                    RangeAggregator.Range range = new RangeAggregator.Range(aggRange.getKey(), aggRange.getFrom(), aggRange.getTo());
+//                    rangeBuilder.addRange(aggRange.getKey(), aggRange.getFrom(), aggRange.getTo());
+                    rangeBuilder.addRange(range);
+                }
+                builder = rangeBuilder;
+                break;
+            case TERMS:
+                builder = AggregationBuilders.terms(fieldAgg.getKey()).field(fieldAgg.getField())
+                        .size(fieldAgg.getSize() == null ? 20 : fieldAgg.getSize());
+                break;
+            default:
+                break;
+        }
+        return builder;
     }
 }

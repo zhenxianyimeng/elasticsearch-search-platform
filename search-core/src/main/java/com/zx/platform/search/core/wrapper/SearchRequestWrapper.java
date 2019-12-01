@@ -1,7 +1,9 @@
 package com.zx.platform.search.core.wrapper;
 
 import com.zx.platform.search.api.dto.common.BoolQuery;
+import com.zx.platform.search.api.dto.common.FieldAgg;
 import com.zx.platform.search.api.dto.req.AbstractReqDTO;
+import com.zx.platform.search.api.dto.req.AggReqDTO;
 import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.core.utils.SearchBuilderUtils;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Description:
  *
@@ -23,6 +27,12 @@ import org.springframework.util.StringUtils;
  */
 @Component
 public class SearchRequestWrapper {
+
+    public SearchRequest buildAggRequest(AggReqDTO aggReqDTO){
+        SearchRequest searchRequest = this.buildQueryRequest(aggReqDTO);
+        this.aggsWrapper(searchRequest, aggReqDTO.getAggList());
+        return searchRequest;
+    }
 
     public SearchRequest buildQueryRequest(QueryReqDTO reqDTO){
         SearchRequest searchRequest = this.buildFilterRequest(reqDTO);
@@ -43,6 +53,16 @@ public class SearchRequestWrapper {
         searchRequest.source(sourceBuilder);
 
         return searchRequest;
+    }
+
+    private void aggsWrapper(SearchRequest searchRequest, List<FieldAgg> fieldAggs){
+        SearchSourceBuilder sourceBuilder = searchRequest.source();
+        if(CollectionUtils.isEmpty(fieldAggs)){
+            return ;
+        }
+        for(FieldAgg agg : fieldAggs){
+            sourceBuilder.aggregation(SearchBuilderUtils.aggBuilder(agg));
+        }
     }
 
     private void queryWrapper(SearchRequest searchRequest, QueryReqDTO reqDTO){
