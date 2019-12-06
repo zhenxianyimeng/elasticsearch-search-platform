@@ -27,4 +27,9 @@ public class FieldAgg implements Serializable {
     private Integer size;
     private Object value;
 
+    public FieldAgg(String key, String field, AggTypeEnum type) {
+        this.key = key;
+        this.field = field;
+        this.type = type;
+    }
 }
