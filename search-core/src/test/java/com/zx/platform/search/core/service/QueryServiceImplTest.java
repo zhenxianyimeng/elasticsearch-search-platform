@@ -4,7 +4,6 @@ import com.zx.platform.search.api.api.IQueryService;
 import com.zx.platform.search.api.constants.FieldFilterTypeEnum;
 import com.zx.platform.search.api.dto.common.FieldBoost;
 import com.zx.platform.search.api.dto.common.FieldFilter;
-import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.api.dto.resp.HitsRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
@@ -38,11 +37,11 @@ public class QueryServiceImplTest {
     public void filterTest() throws SearchException {
         List<FieldFilter> must = new ArrayList<>();
         must.add(new FieldFilter("rating", FieldFilterTypeEnum.TERM, 3));
-        FilterReqDTO reqDTO = new FilterReqDTO();
+        QueryReqDTO reqDTO = new QueryReqDTO();
         reqDTO.setIndex(INDEX);
         reqDTO.setMustFields(must);
 
-        HitsRespDTO hitsRespDTO = queryService.filter(reqDTO);
+        HitsRespDTO hitsRespDTO = queryService.query(reqDTO);
         System.out.println(hitsRespDTO);
     }
 

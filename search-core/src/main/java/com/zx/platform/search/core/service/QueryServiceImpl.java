@@ -1,7 +1,6 @@
 package com.zx.platform.search.core.service;
 
 import com.zx.platform.search.api.api.IQueryService;
-import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.api.dto.resp.HitsRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
@@ -55,6 +54,7 @@ public class QueryServiceImpl implements IQueryService {
                     hits.add(ParserUtils.hitToMap(sh));
                 }
                 hitsRespDTO.setHits(hits);
+                hitsRespDTO.setAggData(ParserUtils.parseAggs(reqDTO.getAggList(), searchResponse.getAggregations()));
             }
         }catch (Exception e){
             log.error("es query error",e);
@@ -62,34 +62,6 @@ public class QueryServiceImpl implements IQueryService {
         }finally {
             long cost = System.currentTimeMillis() - start;
             log.info("es query requestId={}|cost={}ms", reqDTO.getRequestId(), cost);
-        }
-        return hitsRespDTO;
-    }
-
-    @Override
-    public HitsRespDTO filter(FilterReqDTO reqDTO) throws SearchException {
-        HitsRespDTO hitsRespDTO = new HitsRespDTO();
-        long start = System.currentTimeMillis();
-        try {
-            SearchRequest searchRequest = requestWrapper.buildFilterRequest(reqDTO);
-            List<Object> hits = new ArrayList<>();
-            log.info("es filter, dsl={}", searchRequest.source());
-            SearchResponse searchResponse = client.search(searchRequest, RequestOptions.DEFAULT);
-            if(searchResponse == null || !RestStatus.OK.equals(searchResponse.status())){
-                log.warn("es filter fail req={}", reqDTO);
-            }else {
-                hitsRespDTO.setTotal(searchResponse.getHits().getTotalHits());
-                for(SearchHit sh : searchResponse.getHits()){
-                    hits.add(ParserUtils.hitToMap(sh));
-                }
-                hitsRespDTO.setHits(hits);
-            }
-        }catch (Exception e){
-            log.error("es filter error",e);
-            throw new SearchException(SearchExceptionCodeEnum.INNER_ERROR);
-        }finally {
-            long cost = System.currentTimeMillis() - start;
-            log.info("es filter requestId={}, cost={}ms", reqDTO.getRequestId(), cost);
         }
         return hitsRespDTO;
     }

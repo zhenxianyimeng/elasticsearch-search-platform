@@ -1,7 +1,10 @@
 package com.zx.platform.search.api.dto.req;
 
 import com.zx.platform.search.api.constants.QueryOperatorEnum;
+import com.zx.platform.search.api.dto.common.FieldAgg;
 import com.zx.platform.search.api.dto.common.FieldBoost;
+import com.zx.platform.search.api.dto.common.FieldFilter;
+import com.zx.platform.search.api.dto.common.FieldSort;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 
@@ -15,18 +18,32 @@ import java.util.List;
  * @time: 20:40
  */
 @Data
-public class QueryReqDTO extends FilterReqDTO{
+public class QueryReqDTO{
 
     private static final long serialVersionUID = -1784691063533819232L;
 
-    protected String query;
+    private List<FieldFilter> filterFields;
 
-    protected List<FieldBoost> fieldBoostList;
+    private List<FieldFilter> mustFields;
 
-    protected String searchAnalyzer = "ik_smart";
+    private List<FieldFilter> mustNotFields;
 
-    protected QueryOperatorEnum operator = QueryOperatorEnum.OR;
+    private List<FieldFilter> shouldFields;
 
-    protected Boolean must = false;
+    private Integer minNumShouldMatch = 1;
+
+    private List<FieldSort> sortFields;
+
+    private String query;
+
+    private List<FieldBoost> fieldBoostList;
+
+    private String searchAnalyzer = "ik_smart";
+
+    private QueryOperatorEnum operator = QueryOperatorEnum.OR;
+
+    private Boolean must = false;
+
+    private List<FieldAgg> aggList;
 
 }

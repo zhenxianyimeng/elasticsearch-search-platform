@@ -1,6 +1,5 @@
 package com.zx.platform.search.api.api;
 
-import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.api.dto.resp.HitsRespDTO;
 import com.zx.platform.search.api.exception.SearchException;
@@ -14,7 +13,4 @@ import com.zx.platform.search.api.exception.SearchException;
  */
 public interface IQueryService {
     HitsRespDTO query(QueryReqDTO reqDTO) throws SearchException;
-
-    HitsRespDTO filter(FilterReqDTO reqDto) throws SearchException;
-
 }

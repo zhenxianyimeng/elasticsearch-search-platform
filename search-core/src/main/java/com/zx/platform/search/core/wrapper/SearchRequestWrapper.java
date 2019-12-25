@@ -4,7 +4,6 @@ import com.zx.platform.search.api.dto.common.BoolQuery;
 import com.zx.platform.search.api.dto.common.FieldAgg;
 import com.zx.platform.search.api.dto.req.AbstractReqDTO;
 import com.zx.platform.search.api.dto.req.AggReqDTO;
-import com.zx.platform.search.api.dto.req.FilterReqDTO;
 import com.zx.platform.search.api.dto.req.QueryReqDTO;
 import com.zx.platform.search.core.utils.SearchBuilderUtils;
 import org.elasticsearch.action.search.SearchRequest;
